@@ -116,9 +116,11 @@ def enregistre_arbre_dot(root, nom_fichier="arborescence de la structure de repl
   chemin_fichier = f"{repertoire}/{nom_fichier}.dot"
   DotExporter(root).to_dotfile(chemin_fichier)
 
+
+
 def enregistre_arbre_image(root, nom_fichier="arborescence de la structure de replay", repertoire="Comprehension des donnees"):
   """
-  (Ne fonctionne pas)
+  (Ne crash pas mais pas sur que ca marche)
     Enregistre la structure d'un arbre au format image (PNG) à partir d'un fichier DOT.
 
     :param root: Nœud racine de l'arbre à enregistrer.
@@ -163,7 +165,10 @@ def copier_arbre_profondeur_max(arbre, n):
   
 #test 
 
-root2 = copier_arbre_profondeur_max(root, 3)
+root2 = copier_arbre_profondeur_max(root, 1)
 enregistre_arbre_text(root2,"test2")
 enregistre_arbre_dot(root2, "test2")
+print("ok")
+
+enregistre_arbre_image(root2)
 print("fini")
