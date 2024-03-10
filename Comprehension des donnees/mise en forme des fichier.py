@@ -161,7 +161,8 @@ def copier_arbre_profondeur_max(arbre, n):
 
   return arbre_copie
   
-  
+#test 
+
 root2 = copier_arbre_profondeur_max(root, 3)
 enregistre_arbre_text(root2,"test2")
 enregistre_arbre_dot(root2, "test2")
