@@ -1,0 +1,67 @@
+fichier
+├── _id
+│   └── 65db8357e0309619fda923ac
+├── endcontext
+│   ├── 0
+│   │   ├── id
+│   │   ├── username
+│   │   ├── handling
+│   │   ├── active
+│   │   ├── success
+│   │   ├── inputs
+│   │   ├── piecesplaced
+│   │   ├── naturalorder
+│   │   ├── score
+│   │   ├── wins
+│   │   └── points
+│   └── 1
+│       ├── id
+│       ├── username
+│       ├── handling
+│       ├── active
+│       ├── success
+│       ├── inputs
+│       ├── piecesplaced
+│       ├── naturalorder
+│       ├── score
+│       ├── wins
+│       └── points
+├── gametype
+│   └── league
+├── ismulti
+│   └── True
+├── mt
+│   └── 1708884823544
+├── shortid
+│   └── OAU7ilOPg
+├── ts
+│   └── 2024-02-25T18:13:43.511Z
+├── verified
+│   └── True
+├── data
+│   ├── 0
+│   │   ├── board
+│   │   └── replays
+│   ├── 1
+│   │   ├── board
+│   │   └── replays
+│   ├── 2
+│   │   ├── board
+│   │   └── replays
+│   ├── 3
+│   │   ├── board
+│   │   └── replays
+│   ├── 4
+│   │   ├── board
+│   │   └── replays
+│   ├── 5
+│   │   ├── board
+│   │   └── replays
+│   ├── 6
+│   │   ├── board
+│   │   └── replays
+│   └── 7
+│       ├── board
+│       └── replays
+└── back
+    └── tetra_me
