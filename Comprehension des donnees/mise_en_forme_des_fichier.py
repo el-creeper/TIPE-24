@@ -12,9 +12,9 @@ from anytree.dotexport import RenderTreeGraph, DotExporter
 
 #print(os.path.abspath(os.curdir))
 
-chemin = 'Comprehension des donnees/Exemple de replay.txt'
-fichier = open(chemin,'r')
-text = fichier.read()
+
+
+
 def modifieur(text=text):
   """Permet d'avoir une copie du texte avec les bonnes indentations
   
@@ -43,8 +43,18 @@ def modifieur(text=text):
 
 #print de l'arbre
 
+def chemin_to_dict(chemin = 'Comprehension des donnees/Exemple de replay.txt'):
+  """transforme un fichier d une requete json en arbre sous forme de texte
 
-dictionnaire = json.loads(text)
+  :param chemin: chemin du fichier, defaults to 'Comprehension des donnees/Exemple de replay.txt'
+  :type chemin: str, optional
+  :return: renvoie le dictionnaire de la requete json
+  :rtype: dict
+  """
+  fichier = open(chemin,'r')
+  text = fichier.read()
+  dictionnaire = json.loads(text)
+  return dictionnaire
 
 
 
@@ -165,10 +175,17 @@ def copier_arbre_profondeur_max(arbre, n):
   
 #test 
 
-root2 = copier_arbre_profondeur_max(root, 1)
+"""root2 = copier_arbre_profondeur_max(root, 1)
 enregistre_arbre_text(root2,"test2")
 enregistre_arbre_dot(root2, "test2")
-print("ok")
+print("ok")"""
 
-enregistre_arbre_image(root2)
+#enregistre_arbre_image(root2)
+def chemin_to_text(chemin):
+  dict = chemin_to_dict(chemin)
+  root = AnyNode(name = "fichier")
+  parcour_dict(dict,root)
+  enregistre_arbre_text(root,chemin+".txt")
+
+
 print("fini")
