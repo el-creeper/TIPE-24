@@ -1,9 +1,14 @@
 #test 
 #C'est trop bien
-import os
+import sys
+sys.path.append('Comprehension_des_donnees')
 
-os.chdir("Comprehension des donnees")
-print(os.listdir())
+from mise_en_forme_des_fichiers import chemin_to_dict, creer_arbre,enregistre_arbre_text
 
-print(os.getcwd())
-from mise_en_forme_des_fichier import chemin_to_text
+
+
+dico = chemin_to_dict(f"Comprehension_des_donnees/Exemple de replay.txt")
+arbre = creer_arbre(dico)
+string = enregistre_arbre_text(arbre,"test5")
+
+

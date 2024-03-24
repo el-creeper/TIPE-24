@@ -1,0 +1,11 @@
+fichier
+├── _id
+├── endcontext
+├── gametype
+├── ismulti
+├── mt
+├── shortid
+├── ts
+├── verified
+├── data
+└── back

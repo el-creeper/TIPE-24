@@ -1,0 +1,23 @@
+digraph tree {
+    "fichier";
+    "_id";
+    "endcontext";
+    "gametype";
+    "ismulti";
+    "mt";
+    "shortid";
+    "ts";
+    "verified";
+    "data";
+    "back";
+    "fichier" -> "_id";
+    "fichier" -> "endcontext";
+    "fichier" -> "gametype";
+    "fichier" -> "ismulti";
+    "fichier" -> "mt";
+    "fichier" -> "shortid";
+    "fichier" -> "ts";
+    "fichier" -> "verified";
+    "fichier" -> "data";
+    "fichier" -> "back";
+}
