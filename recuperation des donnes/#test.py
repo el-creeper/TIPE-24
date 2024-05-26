@@ -12,3 +12,4 @@ arbre = creer_arbre(dico)
 string = enregistre_arbre_text(arbre,"test5")
 
 
+"test"
