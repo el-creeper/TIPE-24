@@ -83,7 +83,7 @@ def parcour_dict(d,predecesseur):
     :type predecesseur: AnyNode, optional
   """
   for cle in d :
-    node = AnyNode(name = cle, parent = predecesseur)
+    node = AnyNode(name = '{'str(cle)+'}', parent = predecesseur)
     if type(d[cle]) == dict:
       parcour_dict(d[cle],node)
     elif type(d[cle]) == list:
@@ -101,7 +101,7 @@ def parcour_tab(t,predecesseur):
   """
 
   for i in range(len(t)) :
-    node = AnyNode(name = i, parent = predecesseur)
+    node = AnyNode(name = '['+str(i)+']', parent = predecesseur)
     if type(t[i]) == dict:
       parcour_dict(t[i],node)
     elif type(t[i]) == list:
