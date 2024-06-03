@@ -38,7 +38,7 @@ def modifieur(text):
           text_mod+=e
 
           chemin2 = 'Exemple de replay_modif.txt'
-  fichier = open("Comprehension des donnees/"+chemin2,'x')
+  fichier = open("Comprehension_des_donnees/"+chemin2,'x')
   with fichier as f:
       f.write(text_mod)
 
