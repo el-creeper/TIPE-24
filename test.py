@@ -1,21 +1,31 @@
-import json
+import numpy as np
+from scipy.stats import norm
 
-sub_d = {}
-fichier = open("recuperation_des_donnes/ids_echantillons",'r')
-dict = json.loads(fichier.read())
+def calculate_std_dev_for_30_percent_within_range(mean, lower_limit, upper_limit, desired_percentage=0.3):
+    # Mean is given
+    mu = mean
 
-for rank in dict:
-    c=0
-    if rank not in sub_d:
-        sub_d[rank] = []
-        for i_id in range(0,len(dict[rank]),10):
-            sub_d[rank].append(dict[rank][i_id:min(i_id+10,len(dict[rank]))])
+    # Calculate the z-scores for the desired range
+    z_lower = norm.ppf((1 - desired_percentage) / 2)
+    z_upper = norm.ppf(1 - (1 - desired_percentage) / 2)
 
-def mise_en_forme(tableau):
-    text = "user" + tableau[0]+" league saveas \"%Y-%m-%d %H-%M 40L %T.ttrm\"" 
-    for user in tableau:
-        if not user == tableau[0]:
-            text += "\nalso user" + user+" league saveas \"%Y-%m-%d %H-%M 40L %T.ttrm\""
-    return text
+    # Calculate the actual limits based on the desired percentage
+    limit_range = upper_limit - lower_limit
 
-print(mise_en_forme(sub_d["x"][0]))
+    # Calculate the standard deviation based on z-scores and the desired limits
+    std_dev = limit_range / (z_upper - z_lower)
+
+    return std_dev
+
+# Parameters
+mean = 5
+lower_limit = 4
+upper_limit = 6
+
+# Calculate appropriate standard deviation
+std_dev = calculate_std_dev_for_30_percent_within_range(mean, lower_limit, upper_limit)
+
+# Generate a single random number
+random_number = np.random.normal(mean, std_dev)
+print(std_dev)
+print("Random number:", random_number)

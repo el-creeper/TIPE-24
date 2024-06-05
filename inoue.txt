@@ -1,1 +1,1 @@
-user flscreeper league saveas "%d-%m-%Y %H-%M league %T.ttrm"
+user slownoobie league saveas "%U vs %O %Y-%m-%d %H-%M league %T.ttrm"

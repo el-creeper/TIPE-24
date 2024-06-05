@@ -2,7 +2,7 @@ import json
 import requests
 import random
 
-N = 100 #taille de l'echantion (pour un rank)
+N = 50 #taille de l'echantion (pour un rank)
 
 fichier = open("recuperation_des_donnes/all_league",'r')
 print("ok")
@@ -14,9 +14,9 @@ d_rank = {}
 
 for users in dict:
     if users["league"]["rank"] in d_rank:
-        d_rank[users["league"]["rank"]].append(users["_id"])
+        d_rank[users["league"]["rank"]].append(users["username"])
     else:
-        d_rank[users["league"]["rank"]]=[users["_id"]]
+        d_rank[users["league"]["rank"]]=[users["username"]]
         
 #print la taille du nombre de joueurs        
 
