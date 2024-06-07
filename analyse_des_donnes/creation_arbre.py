@@ -8,8 +8,52 @@ from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix
 from sklearn import datasets
 from sklearn import tree
+import seaborn as sns
 
+def sigma_permut(i):
+    """permutation pour remettre les rank dans le bonne ordre
+s
+        'a'     0       -->     9
+        'a+'    1       -->     10
+        'a-'    2       -->     8
+        'b'     3       -->     6
+        'b+'    4       -->     7
+        'b-'    5       -->     5
+        'c'     6       -->     3
+        'c+'    7       -->     4
+        'c-'    8       -->     2
+        'd'     9       -->     0
+        'd+'    10      -->     1
+        's'     11      -->     12
+        's+'    12      -->     13
+        's-'    13      -->     11
+        'ss'    14      -->     14
+        'u'     15      -->     15
+        'x'     16      -->     16
 
+    Args:
+        i int: numero de colonnes
+    Returns:
+        i int: numero permuter
+    """
+    
+    t = [9,10,8,6,7,5,3,4,2,0,1,12,13,11,14,15,16]
+    return t[i]
+
+def permut_tab(tab,sigma):
+    t = tab.copy()
+    for i in range(len(tab)):
+        for j in range(len(tab[i])):
+            t[sigma(i)][sigma(j)] = tab[i][j]
+    return t
+
+def permut_vecteur(tab, sigma):
+    t = tab.copy()
+    for i in range(len(tab)):
+        t[sigma(i)] = tab[i]
+    return t
+    
+    
 df = pd.read_csv('analyse_des_donnes/donnes_a_traiter.csv')
 
 X = df.drop("rank",axis=1).copy()
@@ -25,12 +69,31 @@ X_train, X_test, Y_train, Y_test = train_test_split(X,Y_encoded, random_state=42
 clf_dt = DecisionTreeClassifier(random_state=42)
 clf_dt = clf_dt.fit(X_train,Y_train)
 
+Y_pred = clf_dt.predict(X_test)
+
 print("ok?")
 
-fig = plt.figure(figsize=(25,20))
-_ = tree.plot_tree(clf_dt, 
-                   filled=True)
-plt.plot(fig)
+print("hauteur : ",clf_dt.get_depth(),"\nnombre de feuilles  : ",clf_dt.tree_.n_leaves,"\nnombre de noeuds : ",clf_dt.tree_.node_count)
 
+plt.figure(figsize=(20,15))
+plot_tree(clf_dt,filled = True, rounded = True, class_names=df["rank"].unique(),feature_names=X.columns, max_depth=3)
+plt.savefig("analyse_des_donnes/premier_arbre.svg",format = "svg")
+plt.close()
+
+plt.figure(figsize=(20,15))
+ax= plt.subplot()
+cm = confusion_matrix(np.asarray(Y_test).argmax(axis=1),np.asarray(Y_pred).argmax(axis=1))
+cm = np.round(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], 3)    #on normalise pour avoir des pourcentages
+cm = permut_tab(cm,sigma_permut)
+
+sns.heatmap(cm, cmap="PiYG" ,annot=True, fmt='g', ax=ax);
+
+ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels'); 
+ax.set_title('Confusion Matrix'); 
+name_axis = permut_vecteur(df["rank"].unique(),sigma_permut)
+ax.xaxis.set_ticklabels(name_axis); ax.yaxis.set_ticklabels(name_axis);
+plt.savefig("analyse_des_donnes/Confusion_Matrix.svg",format = "svg")
+
+plt.close()
 
 print("FINI")
