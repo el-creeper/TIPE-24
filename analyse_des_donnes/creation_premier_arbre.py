@@ -10,8 +10,6 @@ from sklearn import datasets
 from sklearn import tree
 import seaborn as sns
 import matplotlib.colors as mcolors
-import time
-from tqdm import tqdm
 
 def sigma_permut(i):
     """permutation pour remettre les rank dans le bonne ordre
@@ -74,31 +72,37 @@ clf_dt = clf_dt.fit(X_train,Y_train)
 
 Y_pred = clf_dt.predict(X_test)
 
-path = clf_dt.cost_complexity_pruning_path(X_train,Y_train)
+print("ok?")
 
-alphas = path.ccp_alphas
-alphas = alphas[:-1]
+print("hauteur : ",clf_dt.get_depth(),"\nnombre de feuilles  : ",clf_dt.tree_.n_leaves,"\nnombre de noeuds : ",clf_dt.tree_.node_count)
 
-clf_dts = []
+plt.figure(figsize=(20,15))
+plot_tree(clf_dt,filled = True, rounded = True, class_names=df["rank"].unique(),feature_names=X.columns, max_depth=3)
+plt.savefig("analyse_des_donnes/premier_arbre.svg",format = "svg")
+plt.close()
 
-print(len(alphas))
+plt.figure(figsize=(20,15))
+ax= plt.subplot()
+cm = confusion_matrix(np.asarray(Y_test).argmax(axis=1),np.asarray(Y_pred).argmax(axis=1))
+cm = np.round(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], 3)    #on normalise pour avoir des pourcentages
+cm = permut_tab(cm,sigma_permut)
 
-for alpha in tqdm(alphas, desc="Precessing",mininterval=5):
-    clf_dt = DecisionTreeClassifier(random_state = 0, ccp_alpha = alpha)
-    clf_dt.fit(X_train,Y_train)
-    clf_dts.append(clf_dt)
-    
 
-    
-train_scores = [clf_dt.score(X_train,Y_train) for clf_dt in clf_dts]
-test_scores = [clf_dt.score(X_test,Y_test) for clf_dt in clf_dts]
 
-fig, ax = plt.subplots()
-ax.set_xlabel("alpha")
-ax.set_ylabel("accuracy")
-ax.set_title("Accuracy vs alpha for training and testing sets")
-ax.plot(alphas, train_scores, marker='o', label="train", drawstyle="steps-post")
-ax.plot(alphas, test_scores, marker='o', label="test", drawstyle="steps-post")
-ax.legend()
-plt.savefig("analyse_des_donnes/graphe_alpha.svg",format = "svg")
-plt.show()
+
+norm = mcolors.LogNorm(vmin=cm.min()+1e-4, vmax=1)
+
+masked_cm = np.ma.masked_where(cm == 0, cm)
+
+# Afficher la heatmap
+sns.heatmap(masked_cm, annot=True, fmt='.3f', ax=ax, norm=norm, cbar_kws={"extend": "min"})
+
+
+ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels'); 
+ax.set_title('Confusion Matrix'); 
+name_axis = permut_vecteur(df["rank"].unique(),sigma_permut)
+ax.xaxis.set_ticklabels(name_axis); ax.yaxis.set_ticklabels(name_axis);
+plt.savefig("analyse_des_donnes/Confusion_Matrix.svg",format = "svg")
+plt.close()
+
+print("FINI")
