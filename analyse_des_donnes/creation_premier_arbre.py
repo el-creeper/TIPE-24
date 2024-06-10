@@ -66,43 +66,55 @@ Y_encoded = pd.get_dummies(Y,"rank")
 
 X_train, X_test, Y_train, Y_test = train_test_split(X,Y_encoded, random_state=42)
 
+for critere in ["gini", "entropy", "log_loss"]:
+    clf_dt = DecisionTreeClassifier(criterion = critere,random_state=42)
+    clf_dt = clf_dt.fit(X_train,Y_train)
 
-clf_dt = DecisionTreeClassifier(random_state=42)
-clf_dt = clf_dt.fit(X_train,Y_train)
+    Y_pred = clf_dt.predict(X_test)
 
-Y_pred = clf_dt.predict(X_test)
+    print("ok?")
 
-print("ok?")
+    print("hauteur : ",clf_dt.get_depth(),"\nnombre de feuilles  : ",clf_dt.tree_.n_leaves,"\nnombre de noeuds : ",clf_dt.tree_.node_count)
 
-print("hauteur : ",clf_dt.get_depth(),"\nnombre de feuilles  : ",clf_dt.tree_.n_leaves,"\nnombre de noeuds : ",clf_dt.tree_.node_count)
+    plt.figure(figsize=(20,15))
+    plot_tree(clf_dt,filled = True, rounded = True,proportion = True ,class_names=df["rank"].unique(),feature_names=X.columns, max_depth=1)
+    plt.savefig("analyse_des_donnes/premier_arbre"+critere+".svg",format = "svg", dpi=43)
+    plt.close()
 
-plt.figure(figsize=(20,15))
-plot_tree(clf_dt,filled = True, rounded = True, class_names=df["rank"].unique(),feature_names=X.columns, max_depth=3)
-plt.savefig("analyse_des_donnes/premier_arbre.svg",format = "svg")
-plt.close()
-
-plt.figure(figsize=(20,15))
-ax= plt.subplot()
-cm = confusion_matrix(np.asarray(Y_test).argmax(axis=1),np.asarray(Y_pred).argmax(axis=1))
-cm = np.round(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], 3)    #on normalise pour avoir des pourcentages
-cm = permut_tab(cm,sigma_permut)
-
-
-
-
-norm = mcolors.LogNorm(vmin=cm.min()+1e-4, vmax=1)
-
-masked_cm = np.ma.masked_where(cm == 0, cm)
-
-# Afficher la heatmap
-sns.heatmap(masked_cm, annot=True, fmt='.3f', ax=ax, norm=norm, cbar_kws={"extend": "min"})
+    plt.figure(figsize=(20,15))
+    ax= plt.subplot()
+    cm = confusion_matrix(np.asarray(Y_test).argmax(axis=1),np.asarray(Y_pred).argmax(axis=1))
+    
+    s=0
+    for i in range(len(cm)):
+        s+=cm[i][i]
+    print(s)
+    
+    s=0
+    for l in cm:
+        for e in l:
+            s+=e
+    print(s)
+    
+    cm = np.round(cm.astype('float') / cm.sum(axis=1)[:, np.newaxis], 3)    #on normalise pour avoir des pourcentages
+    cm = permut_tab(cm,sigma_permut)
 
 
-ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels'); 
-ax.set_title('Confusion Matrix'); 
-name_axis = permut_vecteur(df["rank"].unique(),sigma_permut)
-ax.xaxis.set_ticklabels(name_axis); ax.yaxis.set_ticklabels(name_axis);
-plt.savefig("analyse_des_donnes/Confusion_Matrix.svg",format = "svg")
-plt.close()
+
+
+    norm = mcolors.LogNorm(vmin=cm.min()+1e-4, vmax=1)
+
+    masked_cm = np.ma.masked_where(cm == 0, cm)
+
+    # Afficher la heatmap
+    sns.heatmap(masked_cm, annot=True, fmt='.3f', ax=ax, norm=norm, cbar_kws={"extend": "min"})
+
+
+    ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels'); 
+    ax.set_title('Confusion Matrix'); 
+    name_axis = permut_vecteur(df["rank"].unique(),sigma_permut)
+    ax.xaxis.set_ticklabels(name_axis); ax.yaxis.set_ticklabels(name_axis);
+    plt.savefig("analyse_des_donnes/Confusion_Matrix"+critere+".svg",format = "svg", dpi=43)
+    plt.close()
 
 print("FINI")

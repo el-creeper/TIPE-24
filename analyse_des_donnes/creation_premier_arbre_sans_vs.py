@@ -55,7 +55,7 @@ def permut_vecteur(tab, sigma):
     return t
     
     
-df = pd.read_csv('analyse_des_donnes/donnes_a_traiter.csv')
+df = pd.read_csv('analyse_des_donnes/donnes_a_traiter_sans_vs.csv')
 
 X = df.drop("rank",axis=1).copy()
 
@@ -78,7 +78,7 @@ for critere in ["gini", "entropy", "log_loss"]:
 
     plt.figure(figsize=(20,15))
     plot_tree(clf_dt,filled = True, rounded = True,proportion = True ,class_names=df["rank"].unique(),feature_names=X.columns, max_depth=1)
-    plt.savefig("analyse_des_donnes/premier_arbre"+critere+".svg",format = "svg", dpi=43)
+    plt.savefig("analyse_des_donnes/premier_arbre_sans_vs"+critere+".svg",format = "svg", dpi=43)
     plt.close()
 
     plt.figure(figsize=(20,15))
@@ -114,7 +114,7 @@ for critere in ["gini", "entropy", "log_loss"]:
     ax.set_title('Confusion Matrix'); 
     name_axis = permut_vecteur(df["rank"].unique(),sigma_permut)
     ax.xaxis.set_ticklabels(name_axis); ax.yaxis.set_ticklabels(name_axis);
-    plt.savefig("analyse_des_donnes/Confusion_Matrix"+critere+".svg",format = "svg", dpi=43)
+    plt.savefig("analyse_des_donnes/Confusion_Matrix_sans_vs"+critere+".svg",format = "svg", dpi=43)
     plt.close()
 
 print("FINI")
