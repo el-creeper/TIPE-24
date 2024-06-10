@@ -109,12 +109,18 @@ for critere in ["gini", "entropy", "log_loss"]:
     # Afficher la heatmap
     sns.heatmap(masked_cm, annot=True, fmt='.3f', ax=ax, norm=norm, cbar_kws={"extend": "min"})
 
+    # Augmenter la taille de la police pour les labels des axes
+    ax.set_xlabel('Predicted labels', fontsize=32)
+    ax.set_ylabel('True labels', fontsize=32)
+    ax.set_title('Confusion Matrix', fontsize=32) 
 
-    ax.set_xlabel('Predicted labels');ax.set_ylabel('True labels'); 
-    ax.set_title('Confusion Matrix'); 
-    name_axis = permut_vecteur(df["rank"].unique(),sigma_permut)
-    ax.xaxis.set_ticklabels(name_axis); ax.yaxis.set_ticklabels(name_axis);
-    plt.savefig("analyse_des_donnes/Confusion_Matrix_sans_vs"+critere+".svg",format = "svg", dpi=43)
+    # Augmenter la taille de la police pour les tick labels
+    name_axis = permut_vecteur(df["rank"].unique(), sigma_permut)
+    ax.xaxis.set_ticklabels(name_axis, fontsize=32)
+    ax.yaxis.set_ticklabels(name_axis, fontsize=32)
+
+    # Sauvegarder la figure
+    plt.savefig("analyse_des_donnes/Confusion_Matrix_sans_vs"+critere+".svg", format='svg', dpi=43)
     plt.close()
 
 print("FINI")
